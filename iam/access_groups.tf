@@ -64,7 +64,7 @@ locals {
                 # For each policy
                 for policy in group.policies:
                 # if the policy contains a resource group return it
-                policy.resources.resource_group if contains(keys(policy.resources), "resource_group") && policy.resources.resource != null
+                policy.resources.resource_group if lookup(policy.resources, "resource_group", null) != null
             ]
         ])
     )

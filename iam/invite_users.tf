@@ -5,7 +5,7 @@
 locals {
     access_groups_with_invites = {
         for group in local.access_groups_object:
-        group.key => group if group.invite_users != null 
+        group.name => group if group.invite_users != null 
     }
 }
 

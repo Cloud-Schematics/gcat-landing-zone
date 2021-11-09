@@ -36,7 +36,7 @@ variable region {
 variable resource_group {
     description = "Name of resource group where all infrastructure will be provisioned"
     type        = string
-    default     = "gcat-landing-zone-dev"
+    default     = "jv-delete-this"
 
     validation  {
       error_message = "Unique ID must begin and end with a letter and contain only letters, numbers, and - characters."
@@ -84,24 +84,22 @@ variable access_groups {
                 )
             )
             account_management_policies = optional(list(string))
-            invite_users                = list(string) # Users to invite to the access group
+            invite_users                = optional(list(string)) # Users to invite to the access group
         })
     )
     default     = [
         {
-            name        = "admin"
+            name        = "example_admin"
             description = "An example admin group"
             policies    = [
                 {
                     name = "admin_all"
                     resources = {
-                        resource_group = "gcat-landing-zone-dev"
                     }
                     roles = ["Administrator","Manager"]
                 }
             ]
             dynamic_policies = []
-            invite_users = [ "test@test.test" ]
         },
         {
           name        = "dev"
@@ -111,12 +109,39 @@ variable access_groups {
               name      = "dev_view_vpc"
               resources = {
                 resource_group = "gcat-landing-zone-dev"
-                service        = "id"
+                service        = "is"
               }
               roles = ["Viewer"] 
             }
           ]
-          invite_users = ["test@test.test"]
+        },
+        {
+          name        = "asset_dev"
+          description = "A developer access group"
+          policies    = [
+            {
+              name      = "dev_view_asset_vpc"
+              resources = {
+                resource_group = "asset-development"
+                service        = "is"
+              }
+              roles = ["Viewer"] 
+            }
+          ]
+        },
+        {
+          name        = "rg_admin"
+          description = "A developer access group"
+          policies    = [
+            {
+              name      = "rg_view"
+              resources = {
+                resource_type  = "resource-group"
+                resource_group = "asset-development"
+              }
+              roles = ["Viewer"] 
+            }
+          ]
         }
     ]
 }
@@ -264,7 +289,7 @@ variable acl_rules {
         true if length(
           [
             for type in ["tcp", "udp", "icmp"]:
-            true if rule[type] != null
+            true if lookup(rule, type, null) != null
           ]
         ) > 1
       ])
@@ -368,7 +393,7 @@ variable security_group_rules {
         true if length(
           [
             for type in ["tcp", "udp", "icmp"]:
-            true if rule[type] != null
+            true if lookup(rule, type, null) != null
           ]
         ) > 1
       ])
