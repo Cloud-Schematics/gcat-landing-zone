@@ -1,4 +1,4 @@
-# Multi-tier landing zone with IAM and resource group access using complex datatype
+# Multi-tier landing zone with IAM and resource group access using complex data type
 
 This module creates a resource group, a VPC in that resource group, IAM Access Groups, and invites users to those Access Groups.
 
