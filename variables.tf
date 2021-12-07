@@ -52,7 +52,7 @@ variable resource_group {
 ##############################################################################
 
 variable access_groups {
-    description = "A list of access groups to create"
+    description = "A list of access groups to create. To ensure that this works correctly, use only resource group names that exist within your account."
     type        = list(
         object({
             name        = string # Name of the group
@@ -108,7 +108,7 @@ variable access_groups {
             {
               name      = "dev_view_vpc"
               resources = {
-                resource_group = "gcat-landing-zone-dev"
+                # resource_group = "gcat-landing-zone-dev"
                 service        = "is"
               }
               roles = ["Viewer"] 
@@ -122,7 +122,7 @@ variable access_groups {
             {
               name      = "dev_view_asset_vpc"
               resources = {
-                resource_group = "asset-development"
+                # resource_group = "asset-development"
                 service        = "is"
               }
               roles = ["Viewer"] 
@@ -137,7 +137,7 @@ variable access_groups {
               name      = "rg_view"
               resources = {
                 resource_type  = "resource-group"
-                resource_group = "asset-development"
+                # resource_group = "asset-development"
               }
               roles = ["Viewer"] 
             }
